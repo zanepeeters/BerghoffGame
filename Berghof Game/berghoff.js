@@ -64,7 +64,9 @@ function update() {
     drawChef();
 }
 
-window.onload = function () {
+window.onload = function() {
+    showPopup();
+
     board = document.getElementById("kitchen");
     context = board.getContext("2d");
 
@@ -73,8 +75,10 @@ window.onload = function () {
     chefWalkImg = new Image();
     chefWalkImg.src = "./chefwalk.png";
     chef.img = chefImg;
+    chefImg.style.filter = "brightness(10%)";
+    chefWalkImg.style.filter = "brightness(10%)";
 
-    chefImg.onload = function () {
+    chefImg.onload = function() {
         drawChef();
     }
 
@@ -85,7 +89,48 @@ window.onload = function () {
     document.addEventListener("keyup", stopChef);
 }
 
-function moveChef(e) {  
+function showPopup() {
+    let overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+    document.body.appendChild(overlay);
+
+    let popup = document.createElement("div");
+    popup.classList.add("popup");
+    popup.style.backgroundColor = "white";
+    popup.style.position = "fixed";
+    popup.style.top = "50%";
+    popup.style.left = "50%";
+    popup.style.transform = "translate(-50%, -50%)";
+    popup.style.padding = "20px";
+    popup.style.width = "80%";
+    popup.style.maxWidth = "600px";
+    popup.style.zIndex = "9999"; // Ensure it appears in front
+    document.body.appendChild(popup);
+
+    let header = document.createElement("h1");
+    header.textContent = "Welcome to our game";
+    popup.appendChild(header);
+
+    let content = document.createElement("p");
+    content.textContent = "The goal of our game is for you, the player to finish each level with perfection, you will be scored on materials, and ingredients used. While you use the stove top, you will be asked a number of quiz questions, blocking you from taking your pot of the fire. in order not to fail, you must answer the quiz questions fast enough so you can remove your pot from the fire before the countdown ruins your food.";
+    
+    popup.appendChild(content);
+
+    let content1 = document.createElement("p");
+    content1.textContent = "Don't forget to enjoy yourself!";
+    
+    popup.appendChild(content1);
+
+    let startButton = document.createElement("button");
+    startButton.textContent = "Start now";
+    startButton.addEventListener("click", function() {
+        document.body.removeChild(overlay);
+        document.body.removeChild(popup);
+    });
+    popup.appendChild(startButton);
+}
+
+function moveChef(e) {
     let screenWidth = window.innerWidth;
     let speedMultiplier = screenWidth / boardWidth;
 
@@ -119,4 +164,4 @@ function drawChef() {
     } else {
         context.drawImage(chef.img, chef.x, chef.y, chef.width, chef.height);
     }
-};
+}
